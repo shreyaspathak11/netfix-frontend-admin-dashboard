@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './home.css'
 import { FeaturedInfo } from '../../component/FeaturedInfo/FeaturedInfo'
 import { Chart } from '../../component/chart/Chart'
-import { userData } from '../../dummyData'
 import { WidgetSm } from '../../component/widgetSm/WidgetSm'
 import { WidgetLg } from '../../component/widgetLg/WidgetLg'
 import { useState,useEffect,useMemo } from 'react'
 import axios from 'axios'
-const server = process.env.SERVER_URL || "http://localhost:5000";  
+import { AuthContext } from '../../context/authContext/AuthContext'
+const serverURL = process.env.SERVER_URL || "http://localhost:5000";  
 
 export default function Home() {
   const MONTHS = useMemo(() => [
@@ -26,6 +26,7 @@ export default function Home() {
   ], []);
 
   const [userStats,setUserStats] = useState([])
+  const { user } = useContext(AuthContext);
 
   // useEffect(() => {
   //   const getStats = async () => {
@@ -48,9 +49,9 @@ export default function Home() {
   useEffect(() => {
     const getStats = async () => {
       try {
-        const res = await axios.get(`${server}/api/users/stats/`, {
+        const res = await axios.get(`${serverURL}/api/users/stats/`, {
           headers: {
-            token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODczNTkyNDJmYWVlODE3MzlhYWJmNyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcwODE1NTE5NiwiZXhwIjoxNzEwNzQ3MTk2fQ.i3XAR8xa92OypUnjubLEPrFUuaYLiQHYo3LDM8ungxo"
+            token: `Bearer ${user.accessToken}`
           },
         });
   
@@ -70,7 +71,7 @@ export default function Home() {
     };
   
     getStats();
-  }, [MONTHS]);
+  }, [MONTHS, user.accessToken]);
 
   return (
     <div className='home'>

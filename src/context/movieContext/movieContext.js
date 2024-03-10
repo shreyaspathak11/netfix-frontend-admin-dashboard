@@ -1,3 +1,4 @@
+import React from "react";
 import MovieReducer from './MovieReducer';
 import { createContext, useReducer } from 'react';
 

@@ -10,12 +10,12 @@ import {
   getListsStart,
   getListsSuccess,
 } from "./ListActions";
-const server = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000/api/'
+const server = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000'
 
 export const getLists = async (dispatch) => {
   dispatch(getListsStart());
   try {
-    const res = await axios.get(server + "/lists", {
+    const res = await axios.get(server + "/api/lists", {
       headers: {
         token: "Bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
       },
